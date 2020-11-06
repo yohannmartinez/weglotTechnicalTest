@@ -1,11 +1,19 @@
+The first rule is, **do not** fork this repo, download it as zip.
+
+The second rule is, **do not** fork this repo, download it as zip.
+
+Good luck! 🔥
+
 # Weglot JS Assessment
+
+## Technical skills
 
 Vous devez souvent organiser des réunions de 60 minutes avec vos collègues,
 seulement tout le monde a un emploi du temps très chargé. Google agenda vous
 donne les indisponibilités de tout le monde, pourquoi ne pas faire en sorte de
 trouver ça automatiquement ?
 
-## Format des données
+### Format des données
 
 Vous trouverez les données dans le dossier data.
 
@@ -18,7 +26,7 @@ Chaque ligne est une plage horaire indisponible, au format `d hh:mm-hh:mm`.
 `hh:mm-hh:mm` est la plage horaire de ce jour, début et fin incluses.
 
 Les horaires de travail sont du lundi au vendredi de 08:00 à 17:59. Tous les
-créneaux indisponibles sont inclus dans ces horaires de travail.
+créneaux indisponibles y sont inclus.
 
 **Sortie**
 
@@ -27,7 +35,7 @@ Il doit être:
 
 - en intersection avec aucun créneau d'indisponibilité d'un collègue
 - pendant les horaires de travail, sans dépasser
-- d'une durée exacte de 60 minutes, debut et fin incluses (eg. 14:00-14:59)
+- d'une durée exacte de 60 minutes, début et fin incluses (eg. 14:00-14:59)
 - la première solution possible s'il en existe plusieurs
 
 **Exemple**
@@ -48,29 +56,204 @@ La solution est
 1 13:00-13:59
 ```
 
-Le premier jour il n'y a qu'un seul créneau impossible de 08:45 à 12:59. En
+Le premier jour il n'y a qu'un seul créneau indisponible de 08:45 à 12:59. En
 faisant par exemple commencer la réunion à 13:00 et en la terminant à 13:59, elle
-n'aura aucune intersection avec les créneaux impossibles.
+n'aura aucune intersection avec les créneaux indisponibles.
 
-## Environnement
+### Environnement
 
-Vous travaillez sur Node v12.18.4
+Vous travaillez avec Node.js v12.18.4
 
-## Tests
+### Tests
 
 Créez un test avec une librairie adéquate en prenant les _inputX.txt_ en entrée
 pour vérifier que le résultat de votre fonction correspond aux sorties attendues
 dans les _outputX.txt_ dans le dossier data.
 
-## Déploiement
+### Déploiement
 
 Envoyez votre solution sur un repo git accessible sur Github ou Gitlab puis
 envoyez nous le lien de ce repo, avec l'accès si nécessaire.
 
-## Bonus
+### Bonus
 
 1. Vous préférez avoir un code standardisé ? Nous aussi. Ajoutez votre
    config préférée.
 
 2. Créez une config CI pour exécuter la commande test sur votre repo à chaque
    modification.
+
+---
+
+## Code review
+
+Passez en revue le code ci dessous
+
+Si vous pensez que des modifications sont utiles
+1. écrivez un commentaire comme pendant une review de pull request
+2. puis écrivez le code comme vous l'imagineriez
+
+**NB**
+
+- Faites ces reviews comme bon vous semble, tout n'est pas à commenter
+- Ne commentez pas le style (indentation, trailing comma, etc.)
+- Admettez que le code fonctionne
+- Ces bouts de codes fictifs n'ont rien à voir les uns avec les autres
+- Ne vous attardez pas sur des détails, comme le wording, qui ne nous intéressent pas ici
+
+1. 
+
+```js
+const data = [
+   { value: "1", label: "One" },
+   { value: "2", label: "Two" },
+   { value: "3", label: "Three" },
+];
+
+function getValues() {
+   return data.reduce((acc, { value, label }) => {
+      acc.push(value);
+      return acc;
+   }, []);
+}
+```
+
+2. 
+
+```js
+async function getIndexes() {
+   return await fetch('https://api.coingecko.com/api/v3/indexes').then(res => res.json());
+}
+
+async function analyzeIndexes() {
+   const indexes = await getIndexes().catch((_) => {
+      throw new Error('Unable to fetch indexes')
+   });
+   return indexes;
+}
+```
+
+3. 
+
+```js
+let state;
+const user = await getUser();
+if (user) {
+   const project = await getProject(user.id);
+   user.project = project;
+   state = user;
+} else {
+   state = {
+      project: null
+   };
+}
+ctx.body = state;
+```
+
+4. 
+
+```js
+function getQueryProvider() {
+  const url = window.location.href;
+  const [_, provider] = url.match(/provider=([^&]*)/);
+  if (provider) {
+     return provider;
+  }
+  return;
+}
+```
+
+5. 
+
+```js
+function getParagraphTexts() {
+   const texts = [];
+   document.querySelectorAll("p").forEach(p => {
+      texts.push(p);
+   });
+   return texts;
+}
+```
+
+6. 
+
+```js
+function Employee({ id }) {
+   const [error, setError] = useState(null);
+   const [loading, setLoading] = useState(true);
+   const [employee, setEmployee] = useState({});
+
+   useEffect(() => {
+      getEmployee(id)
+         .then(employee => {
+            setEmployee(employee);
+            setLoading(false);
+         })
+         .catch((e) => {
+            setError('Unable to fetch employee');
+            setLoading(false);
+         });
+   }, [id]);
+
+   if (error) {
+      return <Error />;
+   }
+
+   if (loading) {
+      return <Loading />;
+   }
+
+   return (
+      <Table>
+         <Row>
+            <Cell>{employee.firstName}</Cell>
+            <Cell>{employee.lastName}</Cell>
+            <Cell>{employee.position}</Cell>
+            <Cell>{employee.project}</Cell>
+            <Cell>{employee.salary}</Cell>
+            <Cell>{employee.yearHired}</Cell>
+            <Cell>{employee.wololo}</Cell>
+         </Row>
+      </Table>
+   );
+}
+```
+
+7. 
+
+```js
+async function getFilledIndexes() {
+   try {
+      const filledIndexes = [];
+      const indexes = await getIndexes();
+      const status = await getStatus();
+      const usersId = await getUsersId();
+      
+      for (let index of indexes) {
+         if (index.status === status.filled && users.includes(index.userId)) {
+            filledIndexes.push(index);
+         }
+      }
+      return filledIndexes;
+   } catch(_) {
+      throw new Error ('Unable to get indexes');
+   }
+}
+```
+
+8. 
+
+```js
+function getSettings() {
+   if (user) {
+      const project = await getProject(user.id);
+      if (project) {
+         const settings = await getSettings(project.id);
+         if (settings) {
+            return settings;
+         }
+      }
+   }
+   return {};
+}
+```
