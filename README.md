@@ -1,12 +1,9 @@
 # Weglot JS Assessment
 
-Les trending topics sont des hashtags fréquents sur Twitter. Dans ce test on va
-considérer qu'il se crée un trending topic si un hashtag apparaît au minimum 40
-fois dans une fenêtre de 60 minutes.
-
-Le but de ce test est de déterminer s'il existe un trending topic dans un flux
-de hashtags. On considère qu'il s'écoule une minute entre deux hashtags du flux
-et donc qu'une fenêtre de 60 minutes contient 60 tags.
+Vous devez souvent organiser des réunions de 60 minutes avec vos collègues,
+seulement tout le monde a un emploi du temps très chargé. Google agenda vous
+donne les indisponibilités de tout le monde, pourquoi ne pas faire en sorte de
+trouver ça automatiquement ?
 
 ## Format des données
 
@@ -14,14 +11,50 @@ Vous trouverez les données dans le dossier data.
 
 **Entrée**
 
-Chaque ligne est un hashtag Twitter. Un hashtag est composé de lettres
-minuscules non accentuées précédéespar le symbole #.
+Chaque ligne est une plage horaire indisponible, au format `d hh:mm-hh:mm`.
+
+`d` est le numéro du jour de la semaine (1 à 5, lundi au vendredi).
+
+`hh:mm-hh:mm` est la plage horaire de ce jour, début et fin incluses.
+
+Les horaires de travail sont du lundi au vendredi de 08:00 à 17:59. Tous les
+créneaux indisponibles sont inclus dans ces horaires de travail.
 
 **Sortie**
 
-Une chaine de caractères (commençant par le symbole #) correspondant au premier
-(chronologiquement) trending topic s'il y en a un, sinon la chaîne
-_Pas de trending topic_.
+Une ligne au format `d hh:mm-hh:mm` correspondant à l'horaire de réunion trouvé.
+Il doit être:
+
+- en intersection avec aucun créneau d'indisponibilité d'un collègue
+- pendant les horaires de travail, sans dépasser
+- d'une durée exacte de 60 minutes, debut et fin incluses (eg. 14:00-14:59)
+- la première solution possible s'il en existe plusieurs
+
+**Exemple**
+
+Pour l'entrée :
+
+```
+1 08:45-12:59
+3 11:09-11:28
+5 09:26-09:56
+5 16:15-16:34
+3 08:40-10:12
+```
+
+La solution est
+
+```
+1 13:00-13:59
+```
+
+Le premier jour il n'y a qu'un seul créneau impossible de 08:45 à 12:59. En
+faisant par exemple commencer la réunion à 13:00 et en la terminant à 13:59, elle
+n'aura aucune intersection avec les créneaux impossibles.
+
+## Environnement
+
+Vous travaillez sur Node v12.18.4
 
 ## Tests
 
@@ -32,18 +65,12 @@ dans les _outputX.txt_ dans le dossier data.
 ## Déploiement
 
 Envoyez votre solution sur un repo git accessible sur Github ou Gitlab puis
-envoyez nous le lien de ce repo, avec les accès si nécessaire.
+envoyez nous le lien de ce repo, avec l'accès si nécessaire.
 
 ## Bonus
 
-C'est du bonus, ne faites que ceux qui vous tentent le plus !
-
-1. Si [un fichier en entrée faisait plus de 10 Mo](https://drive.google.com/file/d/1cFXBxCSm4rvOS-wKETsQm8BMDyg9BIbs/view?usp=sharing),
-   votre script réagirait-il aussi rapidement ? Sinon, modifiez votre programme
-   pour que ce soit le cas.
-
-2. Vous préférez avoir un code standardisé ? Nous aussi. Ajoutez votre
+1. Vous préférez avoir un code standardisé ? Nous aussi. Ajoutez votre
    config préférée.
 
-3. Créez une config CI pour exécuter la commande test sur votre repo à chaque
+2. Créez une config CI pour exécuter la commande test sur votre repo à chaque
    modification.
