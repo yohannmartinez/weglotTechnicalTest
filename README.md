@@ -99,7 +99,7 @@ Si vous pensez que des modifications sont utiles
 - Ne commentez pas le style (indentation, trailing comma, etc.)
 - Admettez que le code fonctionne
 - Ces bouts de codes fictifs n'ont rien à voir les uns avec les autres
-- Ne vous attardez pas sur des détails, comme le wording, qui ne nous intéressent pas ici
+- Ne vous attardez pas sur des détails, comme le naming, qui ne nous intéressent pas ici
 
 1. 
 
@@ -244,7 +244,7 @@ async function getFilledIndexes() {
 8. 
 
 ```js
-function getSettings() {
+function getSettings(user) {
    if (user) {
       const project = await getProject(user.id);
       if (project) {
