@@ -246,9 +246,9 @@ async function getFilledIndexes() {
 ```js
 function getSettings(user) {
    if (user) {
-      const project = await getProject(user.id);
+      const project = getProject(user.id);
       if (project) {
-         const settings = await getSettings(project.id);
+         const settings = getSettings(project.id);
          if (settings) {
             return settings;
          }
