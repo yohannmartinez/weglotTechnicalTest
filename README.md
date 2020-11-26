@@ -137,13 +137,16 @@ async function analyzeIndexes() {
 
 ```js
 let state;
-const user = await getUser();
+const user = getUser();
 if (user) {
-   const project = await getProject(user.id);
-   user.project = project;
-   state = user;
+   const project = getProject(user.id);
+   state = {
+      user,
+      project
+   };
 } else {
    state = {
+      user: null,
       project: null
    };
 }
