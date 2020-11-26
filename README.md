@@ -1,6 +1,6 @@
-The first rule is, **do not** fork this repo, download it as zip.
+The first rule is, **do not** fork this repo, clone it.
 
-The second rule is, **do not** fork this repo, download it as zip.
+The second rule is, **do not** fork this repo, clone it.
 
 Good luck! 🔥
 
@@ -244,7 +244,7 @@ async function getFilledIndexes() {
 8. 
 
 ```js
-function getSettings(user) {
+function getUserSettings(user) {
    if (user) {
       const project = getProject(user.id);
       if (project) {
