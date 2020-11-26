@@ -111,7 +111,7 @@ const data = [
 ];
 
 function getValues() {
-   return data.reduce((acc, { value, label }) => {
+   return data.reduce((acc, { value }) => {
       acc.push(value);
       return acc;
    }, []);
@@ -126,8 +126,8 @@ async function getIndexes() {
 }
 
 async function analyzeIndexes() {
-   const indexes = await getIndexes().catch((_) => {
-      throw new Error('Unable to fetch indexes')
+   const indexes = await getIndexes().catch(_ => {
+      throw new Error('Unable to fetch indexes');
    });
    return indexes;
 }
@@ -192,7 +192,7 @@ function Employee({ id }) {
             setEmployee(employee);
             setLoading(false);
          })
-         .catch((e) => {
+         .catch(_ => {
             setError('Unable to fetch employee');
             setLoading(false);
          });
