@@ -105,17 +105,15 @@ Si vous pensez que des modifications sont utiles
 
 ```js
 const data = [
-   { value: "1", label: "One" },
-   { value: "2", label: "Two" },
-   { value: "3", label: "Three" },
+  { value: "1", label: "One" },
+  { value: "2", label: "Two" },
+  { value: "3", label: "Three" },
 ];
 
-function getValues() {
-   return data.reduce((acc, { value }) => {
-      acc.push(value);
-      return acc;
-   }, []);
-}
+const values = data.reduce((values, { value }) => {
+  values.push(value);
+  return values;
+}, []);
 ```
 
 2. 
