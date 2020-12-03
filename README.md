@@ -1,6 +1,6 @@
-The first rule is, **do not** fork this repo, clone it.
+The first rule is, **do not** fork this repo, clone it or use it as template.
 
-The second rule is, **do not** fork this repo, clone it.
+The second rule is, **do not** fork this repo, clone it or use it as template.
 
 Good luck! 🔥
 
