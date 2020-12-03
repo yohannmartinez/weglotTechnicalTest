@@ -233,7 +233,7 @@ async function getFilledIndexes() {
       const usersId = await getUsersId();
       
       for (let index of indexes) {
-         if (index.status === status.filled && users.includes(index.userId)) {
+         if (index.status === status.filled && usersId.includes(index.userId)) {
             filledIndexes.push(index);
          }
       }
