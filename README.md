@@ -116,6 +116,18 @@ const values = data.reduce((values, { value }) => {
 }, []);
 ```
 
+Correction : faire un reduce revient au même mais plus simple avec un map
+
+```js
+const data = [
+  { value: "1", label: "One" },
+  { value: "2", label: "Two" },
+  { value: "3", label: "Three" },
+];
+
+const values = data.map((el) => el.value)
+```
+
 2. 
 
 ```js
@@ -128,6 +140,25 @@ async function analyzeIndexes() {
       throw new Error('Unable to fetch indexes');
    });
    return indexes;
+}
+```
+
+Correction : plus simple que la proposition ci-dessus
+
+```js
+async function getIndexes() {
+   return await fetch('https://api.coingecko.com/api/v3/indexes').then(res => res.json());
+}
+
+async function analyzeIndexes() {
+   try {
+      let indexes = await getIndexes()
+      return indexes
+   } catch (err) {
+      throw new Error('Unable to fetch indexes');
+   }
+
+   
 }
 ```
 
@@ -151,6 +182,24 @@ if (user) {
 ctx.body = state;
 ```
 
+Correction : Plus lisible de cette façon
+
+```js
+let state = {
+   user:null,
+   project:null,
+}
+
+const user = getUser();
+
+if (user) {
+   state.user = user
+   state.project = getProject(user.id);
+}
+
+ctx.body = state;
+```
+
 4. 
 
 ```js
@@ -163,6 +212,15 @@ function getQueryProvider() {
   return;
 }
 ```
+Correction : pas besoin de faire le if, si il n'y a pas de provider il ne retournera rien tout seul
+
+```js
+function getQueryProvider() {
+  const url = window.location.href;
+  const [_, provider] = url.match(/provider=([^&]*)/);
+   return provider;
+}
+```
 
 5. 
 
@@ -173,6 +231,14 @@ function getParagraphTexts() {
       texts.push(p);
    });
    return texts;
+}
+```
+
+Correction : can we just return an array of the query selector all ?
+
+```js
+function getParagraphTexts() {
+   return [...document.querySelectorAll('p')]
 }
 ```
 
@@ -204,6 +270,8 @@ function Employee({ id }) {
       return <Loading />;
    }
 
+   const {firstName, lastName, position, project, salary, yearHired, wololo} = employee
+
    return (
       <Table>
          <Row>
@@ -214,6 +282,51 @@ function Employee({ id }) {
             <Cell>{employee.salary}</Cell>
             <Cell>{employee.yearHired}</Cell>
             <Cell>{employee.wololo}</Cell>
+         </Row>
+      </Table>
+   );
+}
+```
+Correction : à la place de mettre "employee." pour chaque variable affichée, on peut simplement destructurer avant le return
+
+```js
+function Employee({ id }) {
+   const [error, setError] = useState(null);
+   const [loading, setLoading] = useState(true);
+   const [employee, setEmployee] = useState({});
+
+   useEffect(() => {
+      getEmployee(id)
+         .then(employee => {
+            setEmployee(employee);
+            setLoading(false);
+         })
+         .catch(_ => {
+            setError('Unable to fetch employee');
+            setLoading(false);
+         });
+   }, [id]);
+
+   if (error) {
+      return <Error />;
+   }
+
+   if (loading) {
+      return <Loading />;
+   }
+
+   const {firstName, lastName, position, project, salary, yearHired, wololo} = employee
+
+   return (
+      <Table>
+         <Row>
+            <Cell>{firstName}</Cell>
+            <Cell>{lastName}</Cell>
+            <Cell>{position}</Cell>
+            <Cell>{project}</Cell>
+            <Cell>{salary}</Cell>
+            <Cell>{yearHired}</Cell>
+            <Cell>{wololo}</Cell>
          </Row>
       </Table>
    );
@@ -242,6 +355,25 @@ async function getFilledIndexes() {
 }
 ```
 
+Correction : filter est une méthode bien plus pratique dans ce cas
+
+```js
+async function getFilledIndexes() {
+   try {
+      const filledIndexes = [];
+      const indexes = await getIndexes();
+      const status = await getStatus();
+      const usersId = await getUsersId();
+      
+      indexes.filter((index) => index.status === status.filled && usersId.includes(index.userId))
+      
+      return filledIndexes;
+   } catch(_) {
+      throw new Error ('Unable to get indexes');
+   }
+}
+```
+
 8. 
 
 ```js
@@ -256,5 +388,14 @@ function getUserSettings(user) {
       }
    }
    return {};
+}
+```
+
+Correction : on peut simplifier grandement le code, bien qu'il fasse le même process dans les deux cas
+
+```js
+function getUserSettings(user) {
+   const project = user && getProject(user.id);
+   return project ? getSettings(project.id) : {}
 }
 ```
